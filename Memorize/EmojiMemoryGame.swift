@@ -10,12 +10,23 @@ import SwiftUI
 
 //viewmodel
 class EmojiMemoryGame: ObservableObject {
-    private static let emojis = ["👻","🎃","🕷️","😈", "💀", "🕸️", "🧙🏻‍♀️", "🙀", "👹", "😱", "☠️", "🍭"]
+    private static let emojis = [
+        ["👻","🎃","🕷️","😈","💀","🕸️","🧙🏻‍♀️","🙀","👹","😱","☠️","🍭"],
+        ["🐱","🐶","🐯","🐭","🐰","🐷","🦊","🐼","🐵","🐨","🐮","🦋"],
+        ["🍎","🍒","🍋","🍑","🥭","🍈","🍏","🍇","🥝","🍌","🍍","🫐"],
+        ["⚽️","🏀","🏈","⚾️","🥎","🎾","🏐","🏉","🥏","🎱","🪀","🏓"],
+        ["🩷","❤️","💛","🧡","💚","🖤","🩶","🤎","💙","🩵","💜","🤍"],
+        ["🧶","🧵","🪡","🧥","👗","👙","👠","🧣","🧤","👑","👛","👒"]
+        ]
     
     static func createMemoryGame() -> MemoryGame<String> {
-        return MemoryGame(numberOfPairsOfCards: 10) { pairIndex in
+        let numOfThemes = 6
+        let themeRange = 0..<numOfThemes
+        
+        return MemoryGame(numberOfPairsOfCards: 10, numOfThemes: numOfThemes) { pairIndex in
             if emojis.indices.contains(pairIndex) {
-                return EmojiMemoryGame.emojis[pairIndex]
+                let randomThemeIndex = Int.random(in: themeRange)
+                return EmojiMemoryGame.emojis[randomThemeIndex][pairIndex]
             } else {
                 return "⁉️"
             } //access control & trailing closure
@@ -27,6 +38,10 @@ class EmojiMemoryGame: ObservableObject {
     
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
+    }
+    
+    var themes: Array<MemoryGame<String>.Theme> {
+        return model.themes
     }
     
     // MARK: - Intents

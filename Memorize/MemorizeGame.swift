@@ -10,9 +10,13 @@ import Foundation
 //model
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card> // only setting this var is private
+    private(set) var themes: Array<Theme>
     
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
+    init(numberOfPairsOfCards: Int, numOfThemes: (Int), cardContentFactory: (Int)  -> CardContent) {
         cards = Array<Card>()
+        themes = Array<Theme>()
+        
+        
         // add numberOfPairsOfCards x 2 cards
         for pairIndex in 0..<numberOfPairsOfCards {
             let content: CardContent = cardContentFactory(pairIndex)
@@ -67,6 +71,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
              "\(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "")"
         }
         
+    }
+    
+    struct Theme {
+        var name : String
+        var emoji : [String]
+        var numOfPairs : Int
+        var color : String
     }
     
 }
