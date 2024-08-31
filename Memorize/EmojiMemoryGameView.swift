@@ -30,8 +30,14 @@ struct EmojiMemoryGameView: View {
                 }
                 Spacer()
 //                themeChangers
-                Button("Suffle") {
-                    viewModel.shuffle()
+                HStack {
+                    Button("Suffle") {
+                        viewModel.shuffle()
+                    }
+                    Spacer()
+                    Button("New Game") {
+                        viewModel.newGame()
+                    }
                 }
             }
             .navigationTitle("Memorize!")
