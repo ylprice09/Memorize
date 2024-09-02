@@ -12,7 +12,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card> // only setting this var is private
     private(set) var themes: Array<Theme>
     
-    init(numberOfPairsOfCards: Int, numOfThemes: (Int), cardContentFactory: (Int)  -> CardContent) {
+    init(numberOfPairsOfCards: Int, randomThemeIndex: Int, cardContentFactory: (Int)  -> CardContent) {
         cards = Array<Card>()
         themes = Array<Theme>()
         
