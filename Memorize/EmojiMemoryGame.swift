@@ -19,11 +19,11 @@ class EmojiMemoryGame: ObservableObject {
         ["🧶","🧵","🪡","🧥","👗","👙","👠","🧣","🧤","👑","👛","👒"]
         ]
     
+    private static var randomThemeIndex = Int.random(in: 0..<emojis.count)
+
     static func createMemoryGame() -> MemoryGame<String> {
-        let themeRange = 0..<6
-        let randomThemeIndex = Int.random(in: themeRange)
         
-        return MemoryGame(numberOfPairsOfCards: 10, randomThemeIndex: randomThemeIndex) { pairIndex in
+        return MemoryGame(numberOfPairsOfCards: 10, randomThemeIndex: EmojiMemoryGame.randomThemeIndex) { pairIndex in
             if emojis[randomThemeIndex].indices.contains(pairIndex) {
                 return EmojiMemoryGame.emojis[randomThemeIndex][pairIndex]
             } else {
@@ -49,7 +49,12 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        model.newGame()
+        // Generate a new random theme index
+        EmojiMemoryGame.randomThemeIndex = Int.random(in: 0..<EmojiMemoryGame.emojis.count)
+        
+        // Create a new memory game with the new random theme
+        model = EmojiMemoryGame.createMemoryGame()
+        
     }
 
     
