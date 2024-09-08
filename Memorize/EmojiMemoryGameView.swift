@@ -11,12 +11,14 @@ struct EmojiMemoryGameView: View {
     
     @ObservedObject var viewModel: EmojiMemoryGame
     
+    private let aspectRatio: CGFloat = 2/3
+    
     @State var emojis: [String:Array] = [
         "halloween": ["👻","🎃","🕷️","😈", "💀", "🕸️", "🧙🏻‍♀️", "🙀", "👹", "😱", "☠️", "🍭","👻","🎃","🕷️","😈", "💀", "🕸️", "🧙🏻‍♀️", "🙀", "👹", "😱", "☠️", "🍭"],
         "animals":
-    ["🐱", "🐶", "🐯", "🐭", "🐰", "🐷", "🦊", "🐼", "🐵", "🐨", "🐮", "🐱", "🐶", "🐯", "🐭", "🐰", "🐷", "🦊", "🐼", "🐵", "🐨", "🐮"],
+            ["🐱", "🐶", "🐯", "🐭", "🐰", "🐷", "🦊", "🐼", "🐵", "🐨", "🐮", "🐱", "🐶", "🐯", "🐭", "🐰", "🐷", "🦊", "🐼", "🐵", "🐨", "🐮"],
         "fruits":
-    ["🍎", "🍒", "🍋", "🍑", "🥭", "🍈", "🍏", "🍇", "🥝", "🍌", "🍍", "🍎", "🍒", "🍋", "🍑", "🥭", "🍈", "🍏", "🍇", "🥝", "🍌", "🍍"]]
+            ["🍎", "🍒", "🍋", "🍑", "🥭", "🍈", "🍏", "🍇", "🥝", "🍌", "🍍", "🍎", "🍒", "🍋", "🍑", "🥭", "🍈", "🍏", "🍇", "🥝", "🍌", "🍍"]]
     
     @State var cardCount: Int = 22
     @State var currentTheme: String = "halloween"
@@ -24,12 +26,10 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         NavigationView {
             VStack {
-                ScrollView {
-                    cards
-                        .animation(.default, value: viewModel.cards)
-                }
+                cards
+                    .animation(.default, value: viewModel.cards)
                 Spacer()
-//                themeChangers
+                //                themeChangers
                 HStack {
                     Button("Suffle") {
                         viewModel.shuffle()
@@ -46,59 +46,20 @@ struct EmojiMemoryGameView: View {
         
     }
     
-
-    var themeChangers: some View {
-        HStack {
-            halloweenTheme
-            Spacer()
-            animalTheme
-            Spacer()
-            fruitTheme
-        }
-    }
     
 
-    func themeChanger(image: String, theme: String) -> some View {
-        Button(action: {
-        currentTheme = theme
-        emojis[theme]?.shuffle()
-        }) {
-            VStack {
-                Image(systemName: image)
-                    .font(.largeTitle)  // Make the image larger
-                Text(theme)
-                    .font(.caption)     // Make the text smaller
-            }
-        }
-    }
-    
-
-    
-    var cards: some View {
-        LazyVGrid(columns:[GridItem(.adaptive(minimum: 70), spacing:0)], spacing: 0) {
-            ForEach(viewModel.cards) {
-                card in CardView(card)
-                    .aspectRatio(2/3, contentMode: .fit)
-                    .padding(4)
-                    .onTapGesture {
-                        viewModel.choose(card)
-                    }
-            }
+    @ViewBuilder
+    private var cards: some View {
+        AspectVGrid(items: viewModel.cards, aspectRatio: aspectRatio) {
+            card in CardView(card)
+                .padding(4)
+                .onTapGesture {
+                    viewModel.choose(card)
+                }
         }
         .foregroundColor(.orange)
     }
     
-    var halloweenTheme: some View {
-        themeChanger(image: "moon", theme: "halloween")
-    }
-    
-    var fruitTheme: some View {
-        themeChanger(image: "applelogo", theme: "fruits")
-    }
-    
-    var animalTheme: some View {
-        themeChanger(image: "cat.circle.fill" ,theme: "animals")
-    }
 }
 
 //Views are immutable

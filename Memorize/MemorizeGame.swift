@@ -12,10 +12,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card> // only setting this var is private
     private(set) var themes: Array<Theme>
     
-    init(numberOfPairsOfCards: Int, randomThemeIndex: Int, cardContentFactory: (Int)  -> CardContent) {
+    init(numberOfPairsOfCards: Int, theme: Theme, cardContentFactory: (Int)  -> CardContent) {
         cards = Array<Card>()
         themes = Array<Theme>()
-        
         
         // add numberOfPairsOfCards x 2 cards
         for pairIndex in 0..<numberOfPairsOfCards {
